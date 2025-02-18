@@ -1,38 +1,45 @@
 import { Metadata } from "next";
-import App from "./app";
+import CastMinder from "~/components/Castminder";
 
 const appUrl = process.env.NEXT_PUBLIC_URL;
 
-const frame = {
-  version: "next",
-  imageUrl: `${appUrl}/opengraph-image`,
-  button: {
-    title: "Launch Frame",
-    action: {
-      type: "launch_frame",
-      name: "Castminder",
-      url: appUrl,
-      splashImageUrl: `${appUrl}/splash.png`,
-      splashBackgroundColor: "#f7f7f7",
-    },
+// Stringified FrameEmbed JSON according to the spec
+const frameMetadata = {
+  version: "vNext",
+  image: `${appUrl}/opengraph-image`,
+  buttons: [
+    { label: "5 minutes" },
+    { label: "15 minutes" },
+    { label: "30 minutes" },
+  ],
+  input: {
+    text: "What would you like to be reminded about?",
   },
+  postUrl: `${appUrl}/api/frame`,
 };
-
-export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Castminder",
+    title: "CastMinder",
+    description: "Set reminders right from Farcaster",
     openGraph: {
-      title: "Castminder",
-      description: "A Farcaster Frames v2 app for short reminders in warpcast",
+      title: "CastMinder",
+      description: "Set reminders right from Farcaster",
+      images: [`${appUrl}/opengraph-image`],
     },
     other: {
-      "fc:frame": JSON.stringify(frame),
+      // This is the key meta tag that defines this as a Frame
+      "fc:frame": JSON.stringify(frameMetadata),
+      "fc:frame:image": `${appUrl}/opengraph-image`,
+      "fc:frame:button:1": "5 minutes",
+      "fc:frame:button:2": "15 minutes",
+      "fc:frame:button:3": "30 minutes",
+      "fc:frame:input:text": "What would you like to be reminded about?",
+      "fc:frame:post_url": `${appUrl}/api/frame`,
     },
   };
 }
 
 export default function Home() {
-  return <App />;
+  return <CastMinder />;
 }

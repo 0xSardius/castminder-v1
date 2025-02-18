@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-
 import { getSession } from "~/auth";
 import "~/app/globals.css";
 import { Providers } from "~/app/providers";
 
 export const metadata: Metadata = {
   title: "Castminder",
-  description: "A Farcaster Frames v2 app for short reminders in warpcast",
+  description: "Set reminders in warpcast",
 };
 
 export default async function RootLayout({
